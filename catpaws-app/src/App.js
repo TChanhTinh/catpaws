@@ -1,11 +1,11 @@
 import React from 'react';
-import Block from './containers/BlockContainer'
+import Blockchain from './containers/BlockchainContainer'
 import 'antd/dist/antd.css';
 
 function App() {
   return (
     <div>
-      <Block index={0} prevHash="0"/>
+      <Blockchain />
     </div>
   )
 }

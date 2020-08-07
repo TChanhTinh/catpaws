@@ -1,49 +1,77 @@
-import sha256 from 'crypto-js/sha256';
-import sha512 from 'crypto-js/sha512'
-import hmacSHA512 from 'crypto-js/hmac-sha512';
-import Base64 from 'crypto-js/enc-base64';
-
 import {
-    SET_DATA,
+    SET_BLOCK,
     ADD_BLOCK
 } from "../actions/constant"
+import { hashThis } from "../crypto/crypto"
 
 const { combineReducers } = require("redux")
 
 const initBlock = {
     index: 0,
-    nonce: 0,
+    nonce: 9531,
     data: "",
     prevHash: "0",
-    hash: Base64.stringify(sha512(0, 0))
+    hash: "006hfWwHIm8wtqBTo82NmX2Lw1cD97vdKDct5ebsM/f8tw5sg8WNZTzsBXybFh3pgkQvfHJw6GpLaIMjE0Aomw=="
 }
 
-const blockchain = (state = [initBlock], action) => {
+const blocks = (state = [initBlock], action) => {
     const prevState = state[state.length - 1]
-    const hashDigest = sha512(action.nonce + action.data)
 
     switch (action.type) {
-        case SET_DATA:
-            return {
-                ...prevState,
-                
-            }
-        case ADD_BLOCK:
+        case SET_BLOCK:
             return [
                 ...state,
                 {
-                    index: action.index,
-                    nonce: action.nonce,
+                    ...prevState,
                     data: action.data,
-                    prevHash: prevState.hash,
-                    hash: Base64.stringify(hashDigest)
+                    nonce: action.nonce,
+                    hash: action.hash
                 }
             ]
         default: return state
     }
 }
 
+const blockchain = (state = [{blocks: [initBlock]}], action) => {
+    const prevState = state[state.length - 1]
+
+    switch (action.type) {
+        case ADD_BLOCK:
+            return [
+                ...state,
+                {
+                    blocks: [
+                        ...prevState.blocks,
+                        {
+                            index: action.index,
+                            nonce: action.nonce,
+                            data: action.data,
+                            prevHash: action.prevHash,
+                            hash: action.hash
+                        }
+                    ]
+                }
+            ]
+        default: return state
+    }
+}
+
+/*
+            ...state,
+        blocks: state.blocks.map((mapState) => (
+            mapState.index === action.index
+                ? {
+                    ...mapState,
+                    data: action.data,
+                    nonce: action.nonce,
+                    hash: action.hash
+                }
+                : mapState
+        ))
+        */
+
 const rootReducer = combineReducers({
+    blocks,
     blockchain
 })
 

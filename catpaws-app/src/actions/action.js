@@ -1,4 +1,4 @@
-import { SET_DATA, ADD_BLOCK } from './constant'
+import { SET_DATA, SET_BLOCK, ADD_BLOCK } from './constant'
 
 export function setData(key, data) {
     return {
@@ -8,11 +8,23 @@ export function setData(key, data) {
     }
 }
 
-export function addBlock(index, nonce, data) {
+export function setBlock(index, nonce, data, hash) {
+    return {
+        type: SET_BLOCK,
+        index,
+        nonce,
+        data,
+        hash
+    }
+}
+
+export function addBlock(index, nonce, data, prevHash, hash) {
     return {
         type: ADD_BLOCK,
         index,
         nonce,
-        data
+        data,
+        prevHash,
+        hash
     }
 }
