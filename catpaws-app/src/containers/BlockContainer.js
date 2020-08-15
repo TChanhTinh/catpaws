@@ -13,8 +13,8 @@ import { BlockPresentation } from '../components/BlockPresentation'
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setBlock: (index, nonce, data, hash) => {
-            dispatch(setBlock(index, nonce, data, hash))
+        setBlock: (index, nonce, data, prevHash, hash) => {
+            dispatch(setBlock(index, nonce, data, prevHash, hash))
         },
         addBlock: (index, nonce, data, prevHash, hash) => {
             dispatch(addBlock(index, nonce, data, prevHash, hash))

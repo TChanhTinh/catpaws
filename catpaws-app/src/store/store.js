@@ -1,7 +1,5 @@
 import { createStore } from 'redux'
 import rootReducer from '../reducers/reducer'
-import { findNonce, hashThis } from '../crypto/crypto'
-import { setData, addBlock } from '../actions/action'
 
 const initState = [{
     block: {

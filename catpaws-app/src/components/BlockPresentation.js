@@ -1,26 +1,29 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useLayoutEffect} from 'react'
 import { Typography, Input, Button, Row, Col } from 'antd'
-import { hashThis, findNonce } from '../crypto/crypto'
+import { hashThis, findNonce, checkVaildHash } from '../crypto/crypto'
+import '../styles/Block.css'
 
 const { Title } = Typography
 const { TextArea } = Input
 
-export const BlockPresentation = ({index, prevHash, setBlock, addBlock}) => {
+export const BlockPresentation = ({index, prevHash, setBlock, changed}) => {
     const [data, setData] = useState("")
     const [nonce, setNonce] = useState(0)
     const [hash, setHash] = useState("")
+    const [vaild, setVaild] = useState(false)
 
     useEffect(() => {
-        setHash(hashThis(nonce, index+data+prevHash))
-        
-    }, [nonce, data])
+        let hash = hashThis(nonce, index+data+prevHash)
+        setHash(hash)
+        setVaild(checkVaildHash(hash))
+    }, [nonce, data, changed])
 
     function handleClick() {
         setNonce(findNonce(index+data+prevHash))
     }
 
     function applyChange() {
-        addBlock(index, nonce, data, prevHash, hash)
+        setBlock(index, nonce, data, prevHash, hash)
     }
 
     function handleChangeData(e) {
@@ -32,7 +35,7 @@ export const BlockPresentation = ({index, prevHash, setBlock, addBlock}) => {
     }
 
     return (
-        <div>
+        <div className={(vaild ? "block-vaild" : "block-unvaild") + " block"}>
             <Row>
                 <Col span={6}>
                     <Title level={4}>Block</Title>
@@ -77,8 +80,10 @@ export const BlockPresentation = ({index, prevHash, setBlock, addBlock}) => {
                     <Input value={hash} placeholder="Hash" />
                 </Col>
             </Row>
+
             <Button onClick={() => handleClick()}>Mine</Button>
-            <Button onClick={() => applyChange()}>Apply</Button>
+            <Button onClick={() => applyChange()}>Set block</Button>
+
         </div>
     )
 }

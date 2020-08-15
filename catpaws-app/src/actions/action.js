@@ -8,12 +8,13 @@ export function setData(key, data) {
     }
 }
 
-export function setBlock(index, nonce, data, hash) {
+export function setBlock(index, nonce, data, prevHash, hash) {
     return {
         type: SET_BLOCK,
         index,
         nonce,
         data,
+        prevHash,
         hash
     }
 }
