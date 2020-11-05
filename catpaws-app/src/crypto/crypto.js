@@ -1,5 +1,4 @@
-import sha512 from 'crypto-js/sha512'
-import Base64 from 'crypto-js/enc-base64';
+import sha256 from 'crypto-js/sha256'
 import { complexity } from '../common/config'
 
 export const findNonce = (data) => {
@@ -8,14 +7,15 @@ export const findNonce = (data) => {
 
     while(hash.slice(0, 2) !== complexity.string.slice(0, complexity.complex)) {
         nonce++
-        hash = Base64.stringify(sha512(nonce + data))
+        hash = sha256(data + nonce).toString()
     }
 
     return nonce
 }
 
 export const hashThis = (nonce, data) => {
-    return Base64.stringify(sha512(nonce + data))
+    console.log(data+nonce)
+    return sha256(data + nonce).toString()
 }
 
 export const checkVaildHash = (hash) => {

@@ -1,6 +1,7 @@
 import {
     SET_BLOCK,
-    ADD_BLOCK
+    ADD_BLOCK,
+    MAKE_CHAIN
 } from "../actions/constant"
 import { hashThis } from "../crypto/crypto"
 
@@ -8,10 +9,10 @@ const { combineReducers } = require("redux")
 
 const initBlock = {
     index: 0,
-    nonce: 1038,
+    nonce: 387902,
     data: "",
     prevHash: "0",
-    hash: "00ltkuFiz2DNoA0JeKv07ZJADy9kyfSJddNexcayIFDYS7RSyBJAVq8JfV1oRFlVY0zAweFEVr5exruY2sTKtQ=="
+    hash: "000004651204ea3016bbba4eb7c7c920d1a4544563d8aca184dcdceb0f8b0f4e"
 }
 
 const blocks = (state = [initBlock], action) => {
@@ -54,7 +55,7 @@ const refreshChain = (index, blocks) => {
     }
 }
 
-const blockchain = (state = [{ blocks: [initBlock] }], action) => {
+const blockchain = (state = [{ blocks: [] }], action) => {
     const prevState = state[state.length - 1]
 
     switch (action.type) {
@@ -68,7 +69,7 @@ const blockchain = (state = [{ blocks: [initBlock] }], action) => {
                             index: prevState.blocks.length,
                             nonce: 0,
                             data: "",
-                            prevHash: prevState.blocks[prevState.blocks.length-1].hash,
+                            prevhash: prevState.blocks[prevState.blocks.length-1].hash,
                             hash: ""
                         }
                     ]
@@ -86,6 +87,12 @@ const blockchain = (state = [{ blocks: [initBlock] }], action) => {
             return [
                 ...state,
                 prevState
+            ]
+        case MAKE_CHAIN:
+            //console.log(action.chain)
+            return [
+                ...state,
+                action.chain
             ]
         default: return state
     }

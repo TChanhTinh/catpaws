@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import { BlockchainPresentation } from '../components/BlockchainPresentation'
-import { addBlock } from '../actions/action'
+import { addBlock, fetchBlockchain } from '../actions/action'
 
 const mapStateToProps = state => {
     const { blockchain } = state
@@ -12,7 +12,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addBlock: () => dispatch(addBlock())
+        addBlock: () => dispatch(addBlock()),
+        fetchBlockchain: () => dispatch(fetchBlockchain())
     }
 }
 

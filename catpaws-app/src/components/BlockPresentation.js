@@ -1,14 +1,16 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react'
 import { Typography, Input, Button, Row, Col } from 'antd'
-import { hashThis, findNonce, checkVaildHash } from '../crypto/crypto'
+import { hashThis, checkVaildHash } from '../crypto/crypto'
 import '../styles/Block.css'
+import axios from 'axios'
+import { complexity } from '../common/config'
 
 const { Title } = Typography
 const { TextArea } = Input
 
-export const BlockPresentation = ({index, prevHash, setBlock, changed}) => {
-    const [data, setData] = useState("")
-    const [nonce, setNonce] = useState(0)
+export const BlockPresentation = ({index, prevHash, nonceProps, dataProps, setBlock, changed}) => {
+    const [data, setData] = useState(dataProps)
+    const [nonce, setNonce] = useState(nonceProps)
     const [hash, setHash] = useState("")
     const [vaild, setVaild] = useState(false)
 
@@ -19,7 +21,18 @@ export const BlockPresentation = ({index, prevHash, setBlock, changed}) => {
     }, [nonce, data, changed])
 
     function handleClick() {
-        setNonce(findNonce(index+data+prevHash))
+        axios({
+            method: 'POST',
+            url: `http://localhost:8080/encrypt/mine`,
+            data: JSON.stringify({hash: index+data+prevHash, nonce: 0, complexity: complexity.complex}),
+            contentType: "text/plain"
+        })
+        .then( res => {
+            setNonce(res.data.Nonce)
+        })
+        .catch( err => {
+            console.log(err)
+        })
     }
 
     function applyChange() {
@@ -59,7 +72,7 @@ export const BlockPresentation = ({index, prevHash, setBlock, changed}) => {
                     <Title level={4}>Data</Title>
                 </Col>
                 <Col span={18}>
-                    <TextArea onChange={handleChangeData} placeholder="Data" />
+                    <TextArea value={data} onChange={handleChangeData} placeholder="Data" />
                 </Col>
             </Row>
 
