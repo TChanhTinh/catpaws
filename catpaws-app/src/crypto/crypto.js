@@ -14,7 +14,6 @@ export const findNonce = (data) => {
 }
 
 export const hashThis = (nonce, data) => {
-    console.log(data+nonce)
     return sha256(data + nonce).toString()
 }
 

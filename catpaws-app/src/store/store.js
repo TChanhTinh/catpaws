@@ -2,7 +2,6 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools, devToolsEnhancer } from 'redux-devtools-extension'
 import rootReducer from '../reducers/reducer'
-import {fetchBlockchain} from '../actions/action'
 
 const initState = [{
     block: {

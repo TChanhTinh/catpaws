@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import {setBlock, addBlock} from '../actions/action'
+import {setBlock, addBlock, addBlockToChain, fetchBlockchain} from '../actions/action'
 import { BlockPresentation } from '../components/BlockPresentation'
 
 const mapDispatchToProps = (dispatch) => {
@@ -9,6 +9,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         addBlock: (index, nonce, data, prevHash, hash) => {
             dispatch(addBlock(index, nonce, data, prevHash, hash))
+        },
+        addBlockToChain: (index, nonce, data, prevHash, hash) => {
+            dispatch(addBlockToChain(index, nonce, data, prevHash, hash))
+        },
+        fetchBlockchain: () => {
+            dispatch(fetchBlockchain())
         }
     }
 }

@@ -11,7 +11,7 @@ const initBlock = {
     index: 0,
     nonce: 387902,
     data: "",
-    prevHash: "0",
+    prevhash: "0",
     hash: "000004651204ea3016bbba4eb7c7c920d1a4544563d8aca184dcdceb0f8b0f4e"
 }
 
@@ -51,7 +51,7 @@ const refreshChain = (index, blocks) => {
             blocks[i].nonce, 
             blocks[i].index + 
             blocks[i].data + 
-            blocks[i].prevHash)
+            blocks[i].prevhash)
     }
 }
 
@@ -66,7 +66,7 @@ const blockchain = (state = [{ blocks: [] }], action) => {
                     blocks: [
                         ...prevState.blocks,
                         {
-                            index: prevState.blocks.length,
+                            index: prevState.blocks.length+1,
                             nonce: 0,
                             data: "",
                             prevhash: prevState.blocks[prevState.blocks.length-1].hash,
@@ -80,7 +80,7 @@ const blockchain = (state = [{ blocks: [] }], action) => {
                 index: action.index,
                 nonce: action.nonce,
                 data: action.data,
-                prevHash: action.prevHash,
+                prevhash: action.prevHash,
                 hash: action.hash
             }
             refreshChain(action.index, prevState.blocks)

@@ -21,8 +21,21 @@ app.get('/', (req, res) => {
 })
 
 app.get('/blockchain', async (req, res) => {
-    const { rows } = await pool.query(`SELECT * FROM BLOCKCHAIN`)
+    const { rows } = await pool.query(`SELECT * FROM BLOCKCHAIN ORDER BY index`)
     res.send(rows)
+})
+
+app.post('/block', (req, res) => {
+    const block = req.body
+    console.log(`INSERT INTO BLOCKCHAIN(index, nonce, data, prevhash, hash) VALUES(${block.index}, ${block.nonce}, ${block.data}, ${block.prevhash}, ${block.hash})`)
+    pool.query(`INSERT INTO BLOCKCHAIN(index, nonce, data, prevhash, hash) VALUES($1, $2, $3, $4, $5)`, 
+    [block.index, block.nonce, block.data, block.prevhash, block.hash],
+    (err, res) => {
+        if(err) {
+            return console.log(err)
+        }
+    })
+    res.send("success")
 })
 
 app.post('/mining', (req, res) => {

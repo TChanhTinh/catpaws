@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Typography, Input, Button, Row, Col } from 'antd'
 import { hashThis, checkVaildHash } from '../crypto/crypto'
 import '../styles/Block.css'
@@ -8,7 +8,7 @@ import { complexity } from '../common/config'
 const { Title } = Typography
 const { TextArea } = Input
 
-export const BlockPresentation = ({index, prevHash, nonceProps, dataProps, setBlock, changed}) => {
+export const BlockPresentation = ({index, prevHash, nonceProps, dataProps, fetchBlockchain, changed}) => {
     const [data, setData] = useState(dataProps)
     const [nonce, setNonce] = useState(nonceProps)
     const [hash, setHash] = useState("")
@@ -36,7 +36,21 @@ export const BlockPresentation = ({index, prevHash, nonceProps, dataProps, setBl
     }
 
     function applyChange() {
-        setBlock(index, nonce, data, prevHash, hash)
+        const block = {
+            index: index,
+            nonce: nonce,
+            data: data,
+            prevhash: prevHash,
+            hash: hash
+        }
+        axios.post('http://localhost:9000/block', block)
+        .then((res) => {
+            console.log("called")
+            fetchBlockchain()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     function handleChangeData(e) {
