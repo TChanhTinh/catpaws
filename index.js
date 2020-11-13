@@ -39,24 +39,22 @@ app.post('/block', (req, res) => {
 })
 
 app.post('/mining', (req, res) => {
-    console.log(req.body)
     const formData = {
         hash: req.body.hash,
         nonce: 0,
         complexity: req.body.complexity
     }
     request({
-        method: 'PUT', 
+        method: 'POST', 
         url: 'http://localhost:8080/encrypt/mine',
-        headers: { 'Content-Type': 'application/json' },
-        form: req.body
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(formData)
     }, (err, httpResponse, body) => {
         if (err) {
             console.log(err)
             return res.json({ success: false})
         }
-        res.json({ success: true})
-        console.log(body)
+        res.send(JSON.parse(body))
     })
 })
 

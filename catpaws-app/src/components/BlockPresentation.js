@@ -23,9 +23,9 @@ export const BlockPresentation = ({index, prevHash, nonceProps, dataProps, fetch
     function handleClick() {
         axios({
             method: 'POST',
-            url: `http://localhost:8080/encrypt/mine`,
-            data: JSON.stringify({hash: index+data+prevHash, nonce: 0, complexity: complexity.complex}),
-            contentType: "text/plain"
+            url: `http://localhost:9000/mining`,
+            data: {hash: index+data+prevHash, nonce: 0, complexity: complexity.complex},
+            contentType: "application/json"
         })
         .then( res => {
             setNonce(res.data.Nonce)
