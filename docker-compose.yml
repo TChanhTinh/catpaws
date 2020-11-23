@@ -9,7 +9,7 @@ web:
         - "go"
 
 pg:
-  image: "postgres:12"
+  build: ./pg
   container_name: "postgres"
   environment:
     POSTGRES_DB: "db"
