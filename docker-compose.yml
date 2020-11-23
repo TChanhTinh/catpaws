@@ -16,8 +16,6 @@ pg:
     POSTGRES_HOST_AUTH_METHOD: "trust"
   ports:
     - "5431:5432"
-  volumes:
-    - ./pg/db_data:/var/lib/postgresql/data
 
 go:
     build: ./go
